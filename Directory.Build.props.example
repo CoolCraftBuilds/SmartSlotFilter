@@ -1,0 +1,10 @@
+<!--
+  Copy to Directory.Build.props (gitignored) and point GameDir at your own
+  Schedule I install. The project references MelonLoader and the Il2Cpp
+  assemblies in place from that folder; nothing is redistributed here.
+-->
+<Project>
+  <PropertyGroup>
+    <GameDir>C:\Program Files (x86)\Steam\steamapps\common\Schedule I</GameDir>
+  </PropertyGroup>
+</Project>

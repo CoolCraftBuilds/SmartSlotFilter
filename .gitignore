@@ -1,0 +1,24 @@
+# Build output
+bin/
+obj/
+
+# IDE
+.vs/
+.idea/
+*.user
+
+# Never commit game assemblies: Assembly-CSharp.dll and the Il2Cpp interop
+# assemblies are TVGS property. The csproj references them in place from the
+# Steam install (see Directory.Build.props.example).
+*.dll
+*.pdb
+
+# Local machine paths
+Directory.Build.props
+
+# Local tooling config, not part of the mod
+.claude/
+
+# Logs pulled in for debugging
+*.log
+Latest.log
