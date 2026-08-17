@@ -63,5 +63,5 @@ larger game updates.
 
 ## Licence
 
-Not yet chosen. Until a LICENCE file is added, all rights are reserved and this code may
-not be reused.
+[MIT](LICENSE). Reuse it, fork it, ship a fixed build if this one breaks on a game update
+and I am not around — just keep the copyright notice.
