@@ -52,15 +52,6 @@ been re-verified against it. The mod hooks `FilterConfigPanel.OpenDropdown` and 
 `ItemSlot` / `SlotFilter`, so a rename in any of those breaks it — expect to rebuild after
 larger game updates.
 
-## Known issues
-
-- The added buttons are clones of the panel's own **Clear** button, and
-  `onClick.RemoveAllListeners()` does not remove listeners serialised on the prefab. Both
-  buttons therefore still run "clear filter" alongside their own action. It is mostly
-  invisible because they immediately set a filter of their own, but on a slot with no item
-  the result is a cleared filter rather than no change. Fix is to disable persistent
-  listeners explicitly.
-
 ## Licence
 
 [MIT](LICENSE). Reuse it, fork it, ship a fixed build if this one breaks on a game update

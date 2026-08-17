@@ -73,7 +73,7 @@ namespace SmartSlotFilter
 
             // Wire up click
             var button = newButtonObj.GetComponent<Button>();
-            button.onClick.RemoveAllListeners();
+            Neutralise(button);
             button.onClick.AddListener(new System.Action(() =>
             {
                 OnSetFromCurrentClicked(panel);
@@ -89,7 +89,7 @@ namespace SmartSlotFilter
             allButtonObj.transform.SetSiblingIndex(1); // just below the first button
 
             var allButton = allButtonObj.GetComponent<Button>();
-            allButton.onClick.RemoveAllListeners();
+            Neutralise(allButton);
             allButton.onClick.AddListener(new System.Action(() =>
             {
                 OnSetAllFromItemsClicked(panel);
@@ -99,6 +99,23 @@ namespace SmartSlotFilter
             LayoutRebuilder.ForceRebuildLayoutImmediate(buttonParent.GetComponent<RectTransform>());
 
             Melon<SmartSlotFilterMod>.Logger.Msg("Button added successfully.");
+        }
+
+        /// <summary>
+        /// Strips a cloned button of the behaviour it came with.
+        ///
+        /// Both buttons here are clones of the panel's Clear button, and
+        /// RemoveAllListeners only drops listeners added in code -- the one serialised
+        /// on the prefab survives. Each button was therefore clearing the slot's filter
+        /// alongside its own action. Mostly invisible, because both immediately set a
+        /// filter of their own; on a slot with no item the clear was all that happened.
+        /// </summary>
+        static void Neutralise(Button button)
+        {
+            for (int i = 0; i < button.onClick.GetPersistentEventCount(); i++)
+                button.onClick.SetPersistentListenerState(i, UnityEngine.Events.UnityEventCallState.Off);
+
+            button.onClick.RemoveAllListeners();
         }
 
         static void OnSetAllFromItemsClicked(FilterConfigPanel panel)
