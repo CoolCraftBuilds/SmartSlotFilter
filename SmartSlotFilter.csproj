@@ -5,8 +5,8 @@
     <Nullable>enable</Nullable>
     <Platforms>x64</Platforms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <AssemblyName>SlotFilterFromItem</AssemblyName>
-    <RootNamespace>SlotFilterFromItem</RootNamespace>
+    <AssemblyName>SmartSlotFilter</AssemblyName>
+    <RootNamespace>SmartSlotFilter</RootNamespace>
   </PropertyGroup>
 
   <!-- Override in a local, gitignored Directory.Build.props if your game lives

@@ -7,16 +7,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using Il2CppTMPro;
 
-[assembly: MelonInfo(typeof(SlotFilterFromItem.SlotFilterFromItemMod), "SlotFilterFromItem", "1.0.0", "SFox")]
+[assembly: MelonInfo(typeof(SmartSlotFilter.SmartSlotFilterMod), "Smart Slot Filter", "1.0.0", "CoolCraftBuilds")]
 [assembly: MelonGame("TVGS", "Schedule I")]
 
-namespace SlotFilterFromItem
+namespace SmartSlotFilter
 {
-    public class SlotFilterFromItemMod : MelonMod
+    public class SmartSlotFilterMod : MelonMod
     {
         public override void OnInitializeMelon()
         {
-            LoggerInstance.Msg("SlotFilterFromItem initialized.");
+            LoggerInstance.Msg("Smart Slot Filter initialized.");
         }
     }
 
@@ -33,14 +33,14 @@ namespace SlotFilterFromItem
             var dropdown = panel.Dropdown;
             if (dropdown == null)
             {
-                Melon<SlotFilterFromItemMod>.Logger.Msg("Dropdown is null!");
+                Melon<SmartSlotFilterMod>.Logger.Msg("Dropdown is null!");
                 return;
             }
 
             var clearButton = panel.ClearButton;
             if (clearButton == null)
             {
-                Melon<SlotFilterFromItemMod>.Logger.Msg("ClearButton is null!");
+                Melon<SmartSlotFilterMod>.Logger.Msg("ClearButton is null!");
                 return;
             }
 
@@ -50,7 +50,7 @@ namespace SlotFilterFromItem
             if (buttonParent.Find("SetFromCurrentButton") != null) return;
             // (SetAllFromCurrentButton is added in the same pass, so one check suffices)
 
-            Melon<SlotFilterFromItemMod>.Logger.Msg($"Adding button. Parent: {buttonParent.name}, children: {buttonParent.childCount}");
+            Melon<SmartSlotFilterMod>.Logger.Msg($"Adding button. Parent: {buttonParent.name}, children: {buttonParent.childCount}");
 
             // Clone the Clear button for matching style
             var newButtonObj = GameObject.Instantiate(clearButton.gameObject, buttonParent);
@@ -61,11 +61,11 @@ namespace SlotFilterFromItem
             if (label != null)
             {
                 label.text = "From current item";
-                Melon<SlotFilterFromItemMod>.Logger.Msg("Label set.");
+                Melon<SmartSlotFilterMod>.Logger.Msg("Label set.");
             }
             else
             {
-                Melon<SlotFilterFromItemMod>.Logger.Msg("No TextMeshProUGUI found on button!");
+                Melon<SmartSlotFilterMod>.Logger.Msg("No TextMeshProUGUI found on button!");
             }
 
             // Place at top of dropdown
@@ -98,7 +98,7 @@ namespace SlotFilterFromItem
             // Force layout rebuild so container resizes
             LayoutRebuilder.ForceRebuildLayoutImmediate(buttonParent.GetComponent<RectTransform>());
 
-            Melon<SlotFilterFromItemMod>.Logger.Msg("Button added successfully.");
+            Melon<SmartSlotFilterMod>.Logger.Msg("Button added successfully.");
         }
 
         static void OnSetAllFromItemsClicked(FilterConfigPanel panel)
@@ -124,7 +124,7 @@ namespace SlotFilterFromItem
                 count++;
             }
 
-            Melon<SlotFilterFromItemMod>.Logger.Msg($"Set filters on {count} slot(s).");
+            Melon<SmartSlotFilterMod>.Logger.Msg($"Set filters on {count} slot(s).");
             panel.RefreshDisplay();
             panel.CloseDropdown();
         }
@@ -134,20 +134,20 @@ namespace SlotFilterFromItem
             var slot = panel.OpenSlot;
             if (slot == null)
             {
-                Melon<SlotFilterFromItemMod>.Logger.Msg("OpenSlot is null.");
+                Melon<SmartSlotFilterMod>.Logger.Msg("OpenSlot is null.");
                 return;
             }
 
             var itemInstance = slot.ItemInstance;
             if (itemInstance == null)
             {
-                Melon<SlotFilterFromItemMod>.Logger.Msg("Slot is empty — no item to set filter from.");
+                Melon<SmartSlotFilterMod>.Logger.Msg("Slot is empty — no item to set filter from.");
                 return;
             }
 
             var baseInstance = itemInstance.Cast<BaseItemInstance>();
             string itemId = baseInstance.ID;
-            Melon<SlotFilterFromItemMod>.Logger.Msg($"Setting filter to item ID: {itemId}");
+            Melon<SmartSlotFilterMod>.Logger.Msg($"Setting filter to item ID: {itemId}");
 
             var newFilter = new SlotFilter();
             newFilter.Type = SlotFilter.EType.Whitelist;

@@ -1,4 +1,4 @@
-# SlotFilterFromItem
+# Smart Slot Filter
 
 A small quality-of-life mod for **Schedule I** that sets a storage slot's filter from
 whatever is already sitting in it.
@@ -27,9 +27,9 @@ Empty slots are skipped — there is nothing to read a filter from.
 
 ## Installing
 
-Drop `SlotFilterFromItem.dll` into the game's `Mods` folder.
+Drop `SmartSlotFilter.dll` into the game's `Mods` folder.
 
-If you use the MLVScan plugin, add `SlotFilterFromItem.dll` to `WhitelistedMods` under
+If you use the MLVScan plugin, add `SmartSlotFilter.dll` to `WhitelistedMods` under
 `[MLVScan]` in `UserData/MelonPreferences.cfg`, or it will be disabled on startup.
 
 ## Building
