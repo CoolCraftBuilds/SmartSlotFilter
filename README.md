@@ -47,8 +47,7 @@ Output lands in `bin/Release/net6.0/`.
 
 ## Compatibility
 
-Built and confirmed working on **0.4.6f5**. It loads cleanly on **0.4.6f13**, but the two
-buttons have not been explicitly re-tested there. The mod hooks
+Built on **0.4.6f5** and confirmed working on **0.4.6f13**. The mod hooks
 `FilterConfigPanel.OpenDropdown` and reads
 `ItemSlot` / `SlotFilter`, so a rename in any of those breaks it — expect to rebuild after
 larger game updates.
