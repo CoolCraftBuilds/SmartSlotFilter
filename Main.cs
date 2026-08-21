@@ -12,6 +12,12 @@ using Il2CppTMPro;
 // the repo -- that is where an update would appear.
 [assembly: MelonInfo(typeof(SmartSlotFilter.SmartSlotFilterMod), "Smart Slot Filter", "1.0.0", "CoolCraftBuilds",
     "https://www.nexusmods.com/schedule1/mods/2481")]
+// The UpdatesChecker mod is what tells a player their copy is out of date, and
+// it reads neither the download link above nor MelonInfo: it looks for an
+// AssemblyMetadata entry keyed "NexusModID" and otherwise falls back to a file
+// the player has to fill in by hand. Confirmed by reading its assembly, since
+// almost no Schedule I mod ships this and the convention is undocumented.
+[assembly: System.Reflection.AssemblyMetadata("NexusModID", "2481")]
 [assembly: MelonGame("TVGS", "Schedule I")]
 
 namespace SmartSlotFilter
