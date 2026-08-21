@@ -1,0 +1,49 @@
+[size=5]Smart Slot Filter[/size]
+
+Sets a storage slot's filter from whatever is already sitting in it.
+
+[b]The problem[/b]
+Slot filters are how you reserve a slot for one kind of item, and they are what keeps your
+employees from stuffing jars into the slot you meant for seeds. Setting one up means opening
+the filter panel, scrolling a list, and picking the item. For every slot. In every container.
+
+If the container is already sorted the way you want it, all of that information is right there
+in the slots. This mod just reads it.
+
+[b]What it adds[/b]
+Two buttons in the slot filter dropdown:
+
+[list]
+[*][b]From current item[/b] - sets this slot's filter to whatever is in it
+[*][b]Filter all from items[/b] - does that for every non-empty slot in the container, in one click
+[/list]
+
+Empty slots are skipped - there is nothing to read a filter from.
+
+That is the whole mod. It writes the same filters you could set by hand, so nothing in your save
+depends on it and removing it leaves your filters exactly as they were.
+
+[b]Requirements[/b]
+[list]
+[*]Schedule I (IL2CPP build)
+[*]MelonLoader 0.7.3 or newer
+[/list]
+
+[b]Installation[/b]
+Drop [b]SmartSlotFilter.dll[/b] into the game's [b]Mods[/b] folder, or install with Vortex.
+
+If you use the MLVScan plugin, add [b]SmartSlotFilter.dll[/b] to [b]WhitelistedMods[/b] under
+[b][MLVScan][/b] in [b]UserData/MelonPreferences.cfg[/b], or it will be disabled on startup.
+
+[b]Compatibility[/b]
+Built on 0.4.6f5, confirmed working on [b]0.4.6f13[/b]. Multiplayer safe - it only touches your
+own UI and sets filters you could set by hand.
+
+The mod hooks the game's filter panel by name. IL2CPP strips method bodies, so those hooks were
+found by instrumenting a running game rather than read from source: a rename in a game update
+breaks the mod rather than corrupting anything. If it stops working after an update, say so in
+the comments.
+
+[b]Source and licence[/b]
+Source is on GitHub under the [b]MIT[/b] licence. Fork it, reuse it, and if it breaks on a game
+update while I am not around, ship a fixed build - just keep the copyright notice.
