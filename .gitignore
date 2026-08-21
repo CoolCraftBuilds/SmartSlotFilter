@@ -22,3 +22,6 @@ Directory.Build.props
 # Logs pulled in for debugging
 *.log
 Latest.log
+
+# The thumbnail is a build input for the mod page, not a build output.
+!art/
