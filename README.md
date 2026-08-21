@@ -1,5 +1,7 @@
 # Smart Slot Filter
 
+[On Nexus Mods](https://www.nexusmods.com/schedule1/mods/2481)
+
 A small quality-of-life mod for **Schedule I** that sets a storage slot's filter from
 whatever is already sitting in it.
 

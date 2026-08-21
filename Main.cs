@@ -7,7 +7,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using Il2CppTMPro;
 
-[assembly: MelonInfo(typeof(SmartSlotFilter.SmartSlotFilterMod), "Smart Slot Filter", "1.0.0", "CoolCraftBuilds")]
+// The fifth argument is the download link. MelonLoader reads it to tell players
+// where an installed mod came from, so it has to be the Nexus page rather than
+// the repo -- that is where an update would appear.
+[assembly: MelonInfo(typeof(SmartSlotFilter.SmartSlotFilterMod), "Smart Slot Filter", "1.0.0", "CoolCraftBuilds",
+    "https://www.nexusmods.com/schedule1/mods/2481")]
 [assembly: MelonGame("TVGS", "Schedule I")]
 
 namespace SmartSlotFilter
