@@ -1,0 +1,27 @@
+[b]Before reporting a problem, please check these three things[/b]
+
+[b]1. Nothing happens at all / the mod is not in the console[/b]
+This mod needs [b]MelonLoader 0.7.3 or newer[/b], installed separately from melonwiki.xyz. It is
+not bundled here. After installing it, [b]SmartSlotFilter.dll[/b] goes in the game's [b]Mods[/b]
+folder - not the game root. If you installed by hand, check that the path really is
+[i]Schedule I\Mods\SmartSlotFilter.dll[/i].
+
+[b]2. It worked, then stopped after a restart[/b]
+If you run the [b]MLVScan[/b] plugin, it disables mods it does not recognise by renaming them to
+[b].dll.di[/b]. Look in your Mods folder: if you see [b]SmartSlotFilter.dll.di[/b], that is what
+happened. Add [b]SmartSlotFilter.dll[/b] to [b]WhitelistedMods[/b] under [b][MLVScan][/b] in
+[b]UserData/MelonPreferences.cfg[/b] and rename the file back.
+
+[b]3. The buttons are not in the dropdown[/b]
+The buttons read a filter from the item that is in the slot, so they only appear when there is
+something to read. An empty slot has nothing to derive a filter from and the buttons stay hidden.
+Put an item in the slot first, then open the filter panel.
+
+[b]If none of that is it[/b]
+Post your [b]MelonLoader/Latest.log[/b] - the whole file, not a screenshot of the red lines. It
+says which mods loaded and in what order, and that is usually the answer.
+
+[b]After a game update[/b]
+This mod finds the game's filter panel by name. A rename in an update breaks the mod rather than
+damaging anything, so nothing in your save is at risk. Say so in the comments if it stops working
+and I will rebuild it.
