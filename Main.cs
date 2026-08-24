@@ -27,6 +27,9 @@ namespace SmartSlotFilter
         public override void OnInitializeMelon()
         {
             LoggerInstance.Msg("Smart Slot Filter initialized.");
+
+            // Temporary, for the copy-whole-layout work: see Probe.cs.
+            Probe.DumpShapes();
         }
     }
 
