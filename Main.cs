@@ -66,6 +66,7 @@ namespace SmartSlotFilter
             {
                 ResetLabel(buttonParent, "CopyLayoutButton", CopyLabel);
                 ResetLabel(buttonParent, "PasteLayoutButton", PasteLabel);
+                ResetLabel(buttonParent, "ClearLayoutButton", ClearLabel);
                 return;
             }
 
@@ -86,14 +87,20 @@ namespace SmartSlotFilter
             AddButton(buttonParent, clearButton, "PasteLayoutButton", PasteLabel, 3,
                       () => Report(panel, buttonParent, "PasteLayoutButton", LayoutClipboard.Paste(panel.OpenSlot)));
 
+            AddButton(buttonParent, clearButton, "ClearLayoutButton", ClearLabel, 4,
+                      () => Report(panel, buttonParent, "ClearLayoutButton", LayoutClipboard.ClearAll(panel.OpenSlot)));
+
             // Force layout rebuild so container resizes
             LayoutRebuilder.ForceRebuildLayoutImmediate(buttonParent.GetComponent<RectTransform>());
 
             Melon<SmartSlotFilterMod>.Logger.Msg("Buttons added successfully.");
         }
 
+        // Every entry this mod adds says "all", so a glance separates the container-wide
+        // actions from the game's own per-slot ones sitting in the same menu.
         const string CopyLabel = "Copy all filters";
         const string PasteLabel = "Paste all filters";
+        const string ClearLabel = "Clear all filters";
 
         static void AddButton(Transform parent, Button template, string name, string text,
                               int siblingIndex, System.Action onClick)

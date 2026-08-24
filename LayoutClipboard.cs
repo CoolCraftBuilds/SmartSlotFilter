@@ -24,6 +24,7 @@ namespace SmartSlotFilter
         private static readonly List<SlotFilter?> _filters = new();
         private static string _ownerType = "";
         private static int _slotCount;
+        private static int _filled;
 
         public static bool HasCopy => _filters.Count > 0;
 
@@ -51,6 +52,7 @@ namespace SmartSlotFilter
                 withFilter++;
             }
 
+            _filled = withFilter;
             Log($"copied {withFilter} filter(s) across {_slotCount} slot(s) from {Short(_ownerType)}");
             return withFilter == 0
                 ? $"Copied: no filters set"
@@ -76,6 +78,16 @@ namespace SmartSlotFilter
             {
                 Log($"refused paste: copied from {Short(_ownerType)}, target is {Short(type)}");
                 return "Different kind of container";
+            }
+
+            // An empty layout pasted over a configured station wipes it, and nobody
+            // copies "nothing" on purpose now that clearing has its own button. This
+            // used to be the only way to clear a whole container, which is exactly why
+            // it is worth refusing: the accident and the old workaround look identical.
+            if (_filled == 0)
+            {
+                Log("refused paste: the copied layout has no filters");
+                return "Nothing copied - use Clear all";
             }
 
             var slots = owner.ItemSlots;
@@ -109,6 +121,36 @@ namespace SmartSlotFilter
             Log($"pasted {applied} filter(s) onto {Short(type)}"
                 + (skipped > 0 ? $", skipped {skipped} slot(s) the player cannot filter" : ""));
             return $"Pasted {applied} filter(s)";
+        }
+
+        /// <summary>
+        /// Clears every filter in the container.
+        ///
+        /// The game clears one slot at a time. Clearing a whole station used to mean
+        /// copying an unconfigured one over it -- which works, and is indistinguishable
+        /// from doing that by accident. Giving the intent its own button is what makes
+        /// refusing the accident reasonable.
+        /// </summary>
+        public static string ClearAll(ItemSlot slot)
+        {
+            var owner = slot.SlotOwner;
+            if (owner == null) return "Nothing to clear";
+
+            var cleared = 0;
+            var skipped = 0;
+            foreach (var s in owner.ItemSlots)
+            {
+                if (!s.CanPlayerSetFilter) { skipped++; continue; }
+
+                var f = s.PlayerFilter;
+                if (f != null && !f.IsDefault()) cleared++;
+
+                s.SetPlayerFilter(new SlotFilter(), true);
+            }
+
+            Log($"cleared {cleared} filter(s) on {Short(OwnerType(owner))}"
+                + (skipped > 0 ? $", skipped {skipped} slot(s) the player cannot filter" : ""));
+            return $"Cleared {cleared} filter(s)";
         }
 
         /// <summary>
