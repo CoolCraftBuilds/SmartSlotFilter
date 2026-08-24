@@ -19,8 +19,30 @@ Two buttons in the slot filter dropdown:
 |---|---|
 | **From current item** | Sets this slot's filter to a whitelist of the item currently in it |
 | **Filter all from items** | Does the same for every non-empty slot in the container, in one click |
+| **Copy all filters** | Copies the whole container's filter layout |
+| **Paste all filters** | Applies it to another container of the same kind |
+| **Clear all filters** | Clears every filter in the container |
 
-Empty slots are skipped — there is nothing to read a filter from.
+Empty slots are skipped by *Filter all from items* — there is nothing to read a filter from.
+
+Every entry this mod adds says "all", so a glance separates them from the game's own
+per-slot Copy, Paste and Clear sitting in the same menu.
+
+### Copying a layout
+
+Filters are duplicated with the game's own `SlotFilter.Clone()`, so everything a filter
+holds travels with it — the item list, the filter type, and the **allowed qualities**. The
+quality row is the part that is tedious to redo by hand, and it is why copying a single
+slot at a time falls short when eight stations run the same recipe.
+
+A paste onto a different kind of container, or one with a different number of slots, is
+**refused** rather than partly applied: half a layout on a station you believed was
+identical only shows up later, in the mix. The reason appears on the button you clicked.
+
+A slot that had no filter in the copy clears the matching slot on the target. A layout is a
+whole; leaving old filters in place would blend two layouts. Pasting a layout that contains
+no filters at all is refused — use *Clear all filters*, which exists so that clearing is a
+choice rather than a side effect.
 
 ## Requirements
 

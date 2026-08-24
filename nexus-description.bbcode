@@ -16,9 +16,26 @@ Two buttons in the slot filter dropdown:
 [list]
 [*][b]From current item[/b] - sets this slot's filter to whatever is in it
 [*][b]Filter all from items[/b] - does that for every non-empty slot in the container, in one click
+[*][b]Copy all filters[/b] - copies the whole container's filter layout
+[*][b]Paste all filters[/b] - applies it to another container of the same kind
+[*][b]Clear all filters[/b] - clears every filter in the container
 [/list]
 
-Empty slots are skipped - there is nothing to read a filter from.
+Every entry this mod adds says "all", so one glance separates them from the game's own per-slot
+Copy, Paste and Clear sitting in the same menu.
+
+[b]Copying a layout[/b]
+
+The game copies one slot at a time. With eight chemistry stations on the same recipe that is
+every panel, every slot - and the [b]allowed quality[/b] settings have to be redone by hand each
+time, which is the part people skip.
+
+Filters are duplicated using the game's own clone, so everything travels: the item list, the
+filter type, and the quality settings.
+
+A paste onto a different kind of container, or one with a different number of slots, is
+[b]refused[/b] rather than half applied, and the reason appears on the button you clicked. Half a
+layout on a station you believed was identical only turns up later, in the mix.
 
 That is the whole mod. It writes the same filters you could set by hand, so nothing in your save
 depends on it and removing it leaves your filters exactly as they were.

@@ -10,7 +10,7 @@ using Il2CppTMPro;
 // The fifth argument is the download link. MelonLoader reads it to tell players
 // where an installed mod came from, so it has to be the Nexus page rather than
 // the repo -- that is where an update would appear.
-[assembly: MelonInfo(typeof(SmartSlotFilter.SmartSlotFilterMod), "Smart Slot Filter", "1.0.0", "CoolCraftBuilds",
+[assembly: MelonInfo(typeof(SmartSlotFilter.SmartSlotFilterMod), "Smart Slot Filter", "1.1.0", "CoolCraftBuilds",
     "https://www.nexusmods.com/schedule1/mods/2481")]
 // The UpdatesChecker mod is what tells a player their copy is out of date, and
 // it reads neither the download link above nor MelonInfo: it looks for an
@@ -27,9 +27,6 @@ namespace SmartSlotFilter
         public override void OnInitializeMelon()
         {
             LoggerInstance.Msg("Smart Slot Filter initialized.");
-
-            // Temporary, for the copy-whole-layout work: see Probe.cs.
-            Probe.DumpShapes();
         }
     }
 

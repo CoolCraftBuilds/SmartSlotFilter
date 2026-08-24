@@ -17,6 +17,18 @@ The buttons read a filter from the item that is in the slot, so they only appear
 something to read. An empty slot has nothing to derive a filter from and the buttons stay hidden.
 Put an item in the slot first, then open the filter panel.
 
+[b]4. Paste all filters says it refused[/b]
+That is the feature, not a fault. A layout is only applied to a container of the same kind with
+the same number of slots, because half a layout on a station you believed was identical does not
+show up until something is already going wrong in the mix. The button tells you which of the two
+it was.
+
+Pasting a layout that has no filters in it is refused as well. That used to be the only way to
+clear a whole container, so it is now its own button: [b]Clear all filters[/b].
+
+Note that a slot which had no filter in the copy [i]clears[/i] the matching slot on the target. A
+layout is a whole - leaving the old filters in place would blend two layouts together.
+
 [b]If none of that is it[/b]
 Post your [b]MelonLoader/Latest.log[/b] - the whole file, not a screenshot of the red lines. It
 says which mods loaded and in what order, and that is usually the answer.
