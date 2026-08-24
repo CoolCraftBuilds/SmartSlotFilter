@@ -1,0 +1,10 @@
+Filter layouts can now be copied across a whole container instead of one slot at a time.
+
+- Copy all filters / Paste all filters: copies every filter in a container and applies them
+  to another container of the same kind. The allowed quality settings travel with them.
+- Clear all filters: clears a whole container in one click.
+- A paste is refused rather than partly applied when the target is a different kind of
+  container or has a different number of slots. The reason appears on the button you clicked.
+- Pasting a layout with no filters in it is refused as well, now that clearing has its own button.
+
+Confirmed working on 0.4.6f13.
