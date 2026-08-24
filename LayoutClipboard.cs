@@ -53,7 +53,7 @@ namespace SmartSlotFilter
             }
 
             _filled = withFilter;
-            Log($"copied {withFilter} filter(s) across {_slotCount} slot(s) from {Short(_ownerType)}");
+            Log($"copied {withFilter} filter(s) across {_slotCount} slot(s) from {Describe(owner)}");
             return withFilter == 0
                 ? $"Copied: no filters set"
                 : $"Copied {withFilter} filter(s)";
@@ -76,7 +76,7 @@ namespace SmartSlotFilter
             }
             else if (type != _ownerType)
             {
-                Log($"refused paste: copied from {Short(_ownerType)}, target is {Short(type)}");
+                Log($"refused paste: copied from {Short(_ownerType)}, target is {Describe(owner)}");
                 return "Different kind of container";
             }
 
@@ -118,7 +118,7 @@ namespace SmartSlotFilter
                 applied++;
             }
 
-            Log($"pasted {applied} filter(s) onto {Short(type)}"
+            Log($"pasted {applied} filter(s) onto {Describe(owner)}"
                 + (skipped > 0 ? $", skipped {skipped} slot(s) the player cannot filter" : ""));
             return $"Pasted {applied} filter(s)";
         }
@@ -148,7 +148,7 @@ namespace SmartSlotFilter
                 s.SetPlayerFilter(new SlotFilter(), true);
             }
 
-            Log($"cleared {cleared} filter(s) on {Short(OwnerType(owner))}"
+            Log($"cleared {cleared} filter(s) on {Describe(owner)}"
                 + (skipped > 0 ? $", skipped {skipped} slot(s) the player cannot filter" : ""));
             return $"Cleared {cleared} filter(s)";
         }
@@ -178,6 +178,40 @@ namespace SmartSlotFilter
             Log($"could not identify container type ({owner.GetType().FullName}); "
                 + "falling back to slot count only");
             return "";
+        }
+
+        /// <summary>
+        /// Names the container in a way that survives having eight of them.
+        ///
+        /// "ChemistryStation" alone cannot answer "did that clear land on the one I just
+        /// pasted?", which is the question the log exists for. The entity GUID is the
+        /// same identifier Smart Handlers logs, so a line here can be matched against a
+        /// line there for the same station; the Unity instance id is the fallback, good
+        /// enough within one log even though it changes between runs.
+        /// </summary>
+        private static string Describe(IItemSlotOwner owner)
+        {
+            var type = Short(OwnerType(owner));
+
+            try
+            {
+                var entity = owner.TryCast<Il2CppScheduleOne.Management.ITransitEntity>();
+                if (entity != null)
+                {
+                    var guid = entity.GUID.ToString();
+                    if (!string.IsNullOrEmpty(guid)) return $"{type}#{guid.Substring(0, 8)}";
+                }
+            }
+            catch { /* fall through */ }
+
+            try
+            {
+                var component = owner.TryCast<UnityEngine.Component>();
+                if (component != null) return $"{type}#i{component.GetInstanceID()}";
+            }
+            catch { /* fall through */ }
+
+            return type;
         }
 
         // Type names here are long and namespaced; the tail is the useful half.
