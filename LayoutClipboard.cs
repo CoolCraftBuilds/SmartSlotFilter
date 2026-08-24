@@ -34,7 +34,7 @@ namespace SmartSlotFilter
 
             var slots = owner.ItemSlots;
             _filters.Clear();
-            _ownerType = owner.GetType().FullName ?? "";
+            _ownerType = OwnerType(owner);
             _slotCount = slots.Count;
 
             var withFilter = 0;
@@ -66,8 +66,13 @@ namespace SmartSlotFilter
 
             // Refusing beats a partial paste. Half a layout on a station you believed
             // was identical is the kind of wrong that only shows up later, in the mix.
-            var type = owner.GetType().FullName ?? "";
-            if (type != _ownerType)
+            var type = OwnerType(owner);
+            if (type.Length == 0 || _ownerType.Length == 0)
+            {
+                // Two unidentified containers are not evidence of being the same kind.
+                Log("container type unknown on one side; slot count is the only guard");
+            }
+            else if (type != _ownerType)
             {
                 Log($"refused paste: copied from {Short(_ownerType)}, target is {Short(type)}");
                 return "Different kind of container";
@@ -104,6 +109,33 @@ namespace SmartSlotFilter
             Log($"pasted {applied} filter(s) onto {Short(type)}"
                 + (skipped > 0 ? $", skipped {skipped} slot(s) the player cannot filter" : ""));
             return $"Pasted {applied} filter(s)";
+        }
+
+        /// <summary>
+        /// Identifies what kind of container this is.
+        ///
+        /// owner.GetType() is useless here: IItemSlotOwner is a plain interface in the
+        /// interop assembly, so every container answers "IItemSlotOwner" and a type
+        /// comparison silently always passes. Most owners are Unity components, and a
+        /// component knows its real Il2Cpp class -- so ask that, and say so plainly when
+        /// it cannot be had rather than pretending the check ran.
+        /// </summary>
+        private static string OwnerType(IItemSlotOwner owner)
+        {
+            try
+            {
+                var component = owner.TryCast<UnityEngine.Component>();
+                if (component != null)
+                {
+                    var name = component.GetIl2CppType().FullName;
+                    if (!string.IsNullOrEmpty(name)) return name;
+                }
+            }
+            catch { /* fall through to the honest answer */ }
+
+            Log($"could not identify container type ({owner.GetType().FullName}); "
+                + "falling back to slot count only");
+            return "";
         }
 
         // Type names here are long and namespaced; the tail is the useful half.

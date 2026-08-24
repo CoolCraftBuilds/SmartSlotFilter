@@ -123,10 +123,11 @@ namespace SmartSlotFilter
         /// </summary>
         static void Report(FilterConfigPanel panel, Transform parent, string buttonName, string message)
         {
-            ResetLabel(parent, buttonName, message);
-
-            // Clicking anything in the dropdown closes it, which would hide the answer.
+            // Reopen first, then write. Clicking anything in the dropdown closes it, and
+            // reopening runs the postfix above -- which resets every label to its default.
+            // Writing before that call put the answer on screen for no frames at all.
             panel.OpenDropdown();
+            ResetLabel(parent, buttonName, message);
         }
 
         static void ResetLabel(Transform parent, string buttonName, string text)
