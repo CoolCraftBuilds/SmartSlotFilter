@@ -59,59 +59,83 @@ namespace SmartSlotFilter
 
             var buttonParent = clearButton.transform.parent;
 
-            // Don't add twice — check in the actual parent, not panel.Dropdown
-            if (buttonParent.Find("SetFromCurrentButton") != null) return;
-            // (SetAllFromCurrentButton is added in the same pass, so one check suffices)
-
-            Melon<SmartSlotFilterMod>.Logger.Msg($"Adding button. Parent: {buttonParent.name}, children: {buttonParent.childCount}");
-
-            // Clone the Clear button for matching style
-            var newButtonObj = GameObject.Instantiate(clearButton.gameObject, buttonParent);
-            newButtonObj.name = "SetFromCurrentButton";
-
-            // Update label text
-            var label = newButtonObj.GetComponentInChildren<TextMeshProUGUI>();
-            if (label != null)
+            // Buttons persist between openings, so reset any result text the last click
+            // left behind -- otherwise "Pasted 4 filter(s)" is still sitting there the
+            // next time the panel opens and reads as a fresh claim.
+            if (buttonParent.Find("SetFromCurrentButton") != null)
             {
-                label.text = "From current item";
-                Melon<SmartSlotFilterMod>.Logger.Msg("Label set.");
-            }
-            else
-            {
-                Melon<SmartSlotFilterMod>.Logger.Msg("No TextMeshProUGUI found on button!");
+                ResetLabel(buttonParent, "CopyLayoutButton", CopyLabel);
+                ResetLabel(buttonParent, "PasteLayoutButton", PasteLabel);
+                return;
             }
 
-            // Place at top of dropdown
-            newButtonObj.transform.SetAsFirstSibling();
+            Melon<SmartSlotFilterMod>.Logger.Msg($"Adding buttons. Parent: {buttonParent.name}, children: {buttonParent.childCount}");
 
-            // Wire up click
-            var button = newButtonObj.GetComponent<Button>();
-            Neutralise(button);
-            button.onClick.AddListener(new System.Action(() =>
-            {
-                OnSetFromCurrentClicked(panel);
-            }));
+            AddButton(buttonParent, clearButton, "SetFromCurrentButton", "From current item", 0,
+                      () => OnSetFromCurrentClicked(panel));
 
-            // --- "Filter all slots" button ---
-            var allButtonObj = GameObject.Instantiate(clearButton.gameObject, buttonParent);
-            allButtonObj.name = "SetAllFromCurrentButton";
+            AddButton(buttonParent, clearButton, "SetAllFromCurrentButton", "Filter all from items", 1,
+                      () => OnSetAllFromItemsClicked(panel));
 
-            var allLabel = allButtonObj.GetComponentInChildren<TextMeshProUGUI>();
-            if (allLabel != null) allLabel.text = "Filter all from items";
+            // Whole-container copy/paste. The game's own copy button next to these does
+            // one slot; with eight identical stations that is the same panel over and
+            // over, and the quality settings are the part people give up on.
+            AddButton(buttonParent, clearButton, "CopyLayoutButton", CopyLabel, 2,
+                      () => Report(panel, buttonParent, "CopyLayoutButton", LayoutClipboard.Copy(panel.OpenSlot)));
 
-            allButtonObj.transform.SetSiblingIndex(1); // just below the first button
-
-            var allButton = allButtonObj.GetComponent<Button>();
-            Neutralise(allButton);
-            allButton.onClick.AddListener(new System.Action(() =>
-            {
-                OnSetAllFromItemsClicked(panel);
-            }));
+            AddButton(buttonParent, clearButton, "PasteLayoutButton", PasteLabel, 3,
+                      () => Report(panel, buttonParent, "PasteLayoutButton", LayoutClipboard.Paste(panel.OpenSlot)));
 
             // Force layout rebuild so container resizes
             LayoutRebuilder.ForceRebuildLayoutImmediate(buttonParent.GetComponent<RectTransform>());
 
-            Melon<SmartSlotFilterMod>.Logger.Msg("Button added successfully.");
+            Melon<SmartSlotFilterMod>.Logger.Msg("Buttons added successfully.");
+        }
+
+        const string CopyLabel = "Copy all filters";
+        const string PasteLabel = "Paste all filters";
+
+        static void AddButton(Transform parent, Button template, string name, string text,
+                              int siblingIndex, System.Action onClick)
+        {
+            var obj = GameObject.Instantiate(template.gameObject, parent);
+            obj.name = name;
+            obj.SetActive(true);
+
+            var label = obj.GetComponentInChildren<TextMeshProUGUI>();
+            if (label != null)
+            {
+                label.text = text;
+                label.enableWordWrapping = false;
+            }
+
+            obj.transform.SetSiblingIndex(siblingIndex);
+
+            var button = obj.GetComponent<Button>();
+            Neutralise(button);
+            button.onClick.AddListener(onClick);
+        }
+
+        /// <summary>
+        /// Answers where the player clicked rather than only in the log. A refusal the
+        /// player cannot see reads as a broken button, and refusing is the normal
+        /// outcome when two stations are not actually the same kind.
+        /// </summary>
+        static void Report(FilterConfigPanel panel, Transform parent, string buttonName, string message)
+        {
+            ResetLabel(parent, buttonName, message);
+
+            // Clicking anything in the dropdown closes it, which would hide the answer.
+            panel.OpenDropdown();
+        }
+
+        static void ResetLabel(Transform parent, string buttonName, string text)
+        {
+            var button = parent.Find(buttonName);
+            if (button == null) return;
+
+            var label = button.GetComponentInChildren<TextMeshProUGUI>(true);
+            if (label != null) label.text = text;
         }
 
         /// <summary>
